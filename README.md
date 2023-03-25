@@ -1,10 +1,14 @@
-# Seja bem vindo ao desafio de engenharia de dados da Refera!
+# Desafio de Engenharia de Dados da Refera
 
-⚠️⚠️ Não faça fork deste repositório!
+Este repositório tem como finalidade apresentar os códigos desenvolvidos para solucionar o desafio de Engenharia de Dados da Refera.
 
+Este projeto foi construído considerando os seguintes pontos:
 
-O objetivo desse desafio é ser algo rápido para exemplificar alguns desafios do dia a dia de quem trabalha com dados. Queremos com esse desafio avaliar o seu conhecimento básico em programação, banco de dados e entender mais quais as boas práticas você segue para construção de código.
+1. Considerando que cada container deve ser isolado para assumir uma única responsabilidade, foi criado um terceiro container para executar o script desenvolvido. Este container foi construído sobre a imagem do Ubuntu com a finalidade de permitir a instalação dos pacotes necessários.
 
+2. O script desenvolvido consiste em aproveitar as portas expostas previamente definidas no docker-compose.yml original do desafio. Desta forma é possível utilizar comandos da linha de comando para acessar os bancos de dados para extração e carregamento. Optou-se pela simplicidade da CLI uma vez que a tarefa em questão não exige maior complexidade para sua resolução.
+
+3. Considerou-se que assim que os contêineres estivessem disponíveis a operação deveria ser feita sem interferência externa (processo automatizado).
 
 ## O desafio
 
@@ -17,39 +21,29 @@ O arquivo [docker-compose.yml](docker-compose.yml) ativa containers com os banco
 Diferenciais na implementação:
 - script rodando dentro do docker
 
-## Configuração do Ambiente
+## Execução
 
-Os banco de dados podem ser configurados usando o docker compose. Você pode instalá-lo seguindo as instruções em https://docs.docker.com/compose/install/.
-
-Clone o repositório:
-
+Para executar a solução proposta basta rodar:
 
 ```bash
-git clone https://github.com/Refera-Tech/refera-data-engineer-short-challenge
-```
-
-Com o docker compose instalado, basta executar:
-
-```bash
-cd refera-data-engineer-short-challenge
 docker-compose up
 ```
 
-## Entrega
+Como a extração e carregamento é feito de forma automática, pode-se verificar o funcionamento ao acessar o container de analytics:
 
-Subir os códigos em um repositório seu público no Github e enviar por email.
+```bash
+docker exec -it refera-challenge-analytics-1 sh
+```
 
-⚠️⚠️ Não faça fork deste repositório!
+Dentro da linha de comando do container acessamos o banco de dados:
 
-## Observações
+```bash
+psql -U postgres
+```
 
-- Escolha a linguagem de programação que quiser, mas evite ambientes complexos.
-- Use bibliotecas de código aberto e escreva seu próprio código.
-- É importante lembrar que precisaremos executar seu código.
+Por fim verificamos a presença de dados populados nas tabelas, neste caso usamos a tabela actor como exemplo:
 
-## Links Úteis
-
-- [Transactional vs. Analytical Workloads](https://www.youtube.com/watch?v=ivSPZB6zUKY)
-- [Docker Docs](https://docs.docker.com/)
-- [Docker em 22 minutos - teoria e prática](https://www.youtube.com/watch?v=Kzcz-EVKBEQ)
-- [Docker Compose na prática](https://www.youtube.com/watch?v=HxPz3eLnXZk)
+```bash
+\c analytics
+SELECT * FROM actor;
+```
