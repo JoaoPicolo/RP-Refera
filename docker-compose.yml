@@ -32,7 +32,6 @@ services:
     image: ubuntu:latest
     volumes:
       - ./scripts/extract_and_load.sh:/extract_and_load.sh
-      - ./scripts/wait-for-it.sh:/wait-for-it.sh
     command: bash -c "chmod +x /extract_and_load.sh && /extract_and_load.sh"
     depends_on:
       - transactional
